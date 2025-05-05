@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.075);
+            transition: background-color 0.3s ease; /* Smooth transition on hover */
+        }
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+        .table-bordered thead th,
+        .table-bordered thead td {
+            border-bottom-width: 2px;
+        }
+        .table-striped.table-bordered tbody tr:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        .table-striped.table-bordered tbody tr:hover {
+            background-color: rgba(0, 0, 0, 0.075);
+        }
+
+        /* Custom styles for improved UI - Light Theme and Animations */
+        .container {
+            background-color: #f9f9f9; /* Light background */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            border-radius: 0.75rem; /* Rounded corners */
+            padding: 2rem;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
+        }
+        .container:hover {
+            background-color: #ffffff; /* Slightly lighter on hover */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Increased shadow on hover */
+        }
+        .page-header {
+            color: #1e40af; /* Darker blue for heading - Tailwind indigo-700 */
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeIn 1s ease, slideInDown 0.5s ease; /* Added animation */
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideInDown {
+            from { transform: translateY(-20px); }
+            to { transform: translateY(0); }
+        }
+        .section-header {
+            color: #4f46e5; /* Vibrant purple for section headings - Tailwind indigo-600 */
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #d946ef; /* Added border */
+            padding-bottom: 0.5rem;
+            transition: color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+        }
+        .section-header:hover {
+            color: #6d28d9;  /* Lighter purple on hover - Tailwind violet-500 */
+            border-color: #f43f5e; /* Change border color on hover - Tailwind rose-500 */
+        }
+        .info-block {
+            background-color: #edf2f7; /* Very light gray - Tailwind gray-200 */
+            border-radius: 0.5rem; /* Rounded corners */
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+        }
+        .info-block:hover {
+            background-color: #f0f4f8; /* Slightly darker on hover - Tailwind gray-100 */
+            transform: translateY(-4px); /* Slight lift on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .info-block h3 {
+            color: #1e3a8a; /* Dark blue for info block heading - Tailwind blue-700 */
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .info-block h3:hover {
+             color: #2e4196; /* Even Darker blue for info block heading on hover*/
+        }
+        .table-container {
+            overflow-x: auto; /* Horizontal scrollbar for tables on small screens */
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .data-table {
+            background-color: #fff;
+            border-radius: 0.5rem;
+            overflow: hidden; /* To contain rounded corners of thead and tbody */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: box-shadow 0.3s ease;
+        }
+        .data-table:hover{
+             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .data-table thead th {
+            background-color: #e0f2fe; /* Light blue for header row - Tailwind cyan-100 */
+            color: #0369a1; /* Darker blue for header text - Tailwind cyan-700 */
+            padding: 0.8rem 1.2rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #b7e0f5; /* Stronger bottom border */
+            transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transitions */
+        }
+        .data-table thead th:hover {
+            background-color: #d1f1ff; /* Slightly lighter blue on header hover - Tailwind cyan-50 */
+            color: #0e7490; /* Darker text on header hover - Tailwind cyan-800 */
+        }
+
+        .data-table tbody td {
+            padding: 0.8rem 1.2rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9; /* Very light border - Tailwind gray-100 */
+            transition: background-color 0.3s ease; /* For hover effect */
+        }
+
+        .data-table tbody tr:hover td{
+             background-color: #f5f5f5; /* Slightly lighter background on row hover - Tailwind gray-50 */
+        }
+        .data-table tbody tr:last-child td {
+            border-bottom: none; /* Remove border from last row */
+        }
+
+        .img-container {
+            border-radius: 0.5rem;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transform */
+        }
+
+        .img-container:hover {
+            transform: translateY(-6px) scale(1.02);  /* Slight lift and scale on hover */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .plot-title {
+            font-size: 1.25rem;
+            color: #1e40af; /* Darker blue - Tailwind indigo-700 */
+            margin-top: 1rem;
+            text-align: center;
+            font-weight: 600; /* Make title bold */
+            transition: color 0.3s ease;
+        }
+        .plot-title:hover{
+            color: #3b82f6; /* Lighter blue on hover - Tailwind blue-500 */
+        }
+
+        .warning-block {
+            background-color: #fffbeb; /* Very light yellow - Tailwind amber-50 */
+            border-left: 4px solid #fef08a; /* Yellow border - Tailwind amber-300 */
+            color: #fde047; /* Yellow text - Tailwind amber-200 */
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.5rem;
+            animation: fadeIn 1s ease, slideInLeft 0.5s ease;
+        }
+        @keyframes slideInLeft {
+            from { transform: translateX(-20px); }
+            to { transform: translateX(0px); }
+        }
+
+        .facts-block {
+            background-color: #f0fdf4; /* Very light green - Tailwind green-50 */
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .facts-block:hover {
+            background-color: #ecfdf5; /* Slightly darker on hover - Tailwind green-100 */
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .facts-block h3 {
+            color: #15803d; /* Darker green - Tailwind green-800 */
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        .facts-block h3:hover{
+            color: #16a34a; /* Lighter green on hover - Tailwind green-600 */
+        }
+
+        .facts-list {
+            list-style: disc;
+            padding-left: 1.25rem;
+            color: #3f6212; /* Dark olive green - Tailwind lime-700 */
+            space-y: 0.25rem;
+        }
+        .facts-list li span{
+            font-weight: 500; /* Make the label bold */
+            color: #6b7280; /* Gray color for label */
+        }
+
+        /* Scroll to Top Button */
+        #scroll-to-top {
+            position: fixed; /* Fixed position relative to the viewport */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            z-index: 10; /* Ensure it's above other elements */
+            cursor: pointer; /* Show a pointer cursor on hover */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out; /* Smooth transition */
+            border-radius: 50%; /* Make it a circle */
+            width: 50px; /* Diameter of the button */
+            height: 50px;
+            background-color: #4f46e5; /* Vibrant purple - Tailwind indigo-600 */
+            color: #fff; /* White icon color */
+            display: flex; /* For centering the icon */
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        }
+
+        #scroll-to-top:hover {
+            opacity: 0.9; /* Slightly transparent on hover */
+            transform: translateY(-5px); /* Move up slightly on hover */
+            background-color: #6d28d9; /* Lighter purple on hover - Tailwind violet-500 */
+        }
+
+        #scroll-to-top.show {
+            opacity: 1; /* Show the button when the 'show' class is added */
+        }
+
+        /* Styles for the Font Awesome icon.  Using a simple up arrow */
+        #scroll-to-top i {
+            font-size: 1.5rem; /* Icon size */
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 p-6">
+    <div class="container mx-auto">
+        <h1 class="page-header">Data Analysis Results</h1>
+
+        {% if error_message %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-8" role="alert">
+                <strong class="font-bold">Error:</strong>
+                <span class="block sm:inline">{{ error_message }}</span>
+            </div>
+        {% else %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="info-block">
+                    <h2 class="section-header">File Information</h2>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><span class="font-semibold">File Name:</span> {{ results.file_name }}</li>
+                        <li><span class="font-semibold">File Size:</span> {{ results.file_size }} bytes</li>
+                        <li><span class="font-semibold">Shape:</span> {{ results.shape }}</li>
+                    </ul>
+                </div>
+                <div class="info-block">
+                    <h2 class="section-header">Sample Data</h2>
+                    <div class="table-container">
+                        {{ results.sample|safe }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="info-block">
+                    <h2 class="section-header">Column Information</h2>
+                    <pre class="bg-gray-200 rounded-md p-4 overflow-auto text-sm">{{ results.info }}</pre>
+                </div>
+                <div class="info-block">
+                    <h2 class="section-header">Descriptive Statistics</h2>
+                    <div class="table-container">
+                        {{ results.describe|safe }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="info-block">
+                    <h2 class="section-header">Missing Values Analysis</h2>
+                    {% if results.has_missing_values %}
+                        <div class="table-container">
+                            {{ results.missing_values|safe }}
+                        </div>
+                    {% else %}
+                        <p class="text-gray-700">No missing values found.</p>
+                    {% endif %}
+                </div>
+                <div class="info-block">
+                    <h2 class="section-header">Duplicates Analysis</h2>
+                    {% if results.has_duplicates %}
+                        <p class="text-red-600">Has Duplicates: Yes ({{ results.duplicated_count }})</p>
+                    {% else %}
+                        <p class="text-green-600">Has Duplicates: No</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if results.correlation_matrix_png %}
+                <div class="mb-8">
+                    <h2 class="section-header">Correlation Matrix</h2>
+                    <div class="img-container">
+                        <img src="data:image/png;base64,{{ results.correlation_matrix_png }}" alt="Correlation Matrix" class="w-full">
+                    </div>
+                    {% if results.correlation_matrix_error %}
+                        <p class="text-red-600 mt-2">{{ results.correlation_matrix_error }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="mb-8">
+                <h2 class="section-header">Data Visualization</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for plot in results.plots %}
+                        <div class="img-container">
+                            <img src="data:image/png;base64,{{ plot }}" alt="Data Plot" class="w-full">
+                         </div>
+                    {% endfor %}
+                    {% for error in results.plot_errors %}
+                        <div class="warning-block">
+                            <strong class="font-bold">Warning:</strong>
+                            <span class="block sm:inline">{{ error }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h2 class="section-header">Column Facts</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for col, facts in results.facts.items %}
+                        <div class="facts-block">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-2">{{ col }}</h3>
+                            <ul class="facts-list">
+                                <li><span class="font-medium">Max:</span> {% if facts.max is not None %}{{ facts.max }}{% else %} N/A {% endif %}</li>
+                                <li><span class="font-medium">Min:</span> {% if facts.min is not None %}{{ facts.min }}{% else %} N/A {% endif %}</li>
+                                <li><span class="font-medium">Most Common:</span> {% if facts.most_common is not None %}{{ facts.most_common }}{% else %} N/A {% endif %}</li>
+                                <li><span class="font-medium">Data Type:</span> {{ facts.data_type }}</li>
+                            </ul>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <button id="scroll-to-top" title="Go to Top">
+            <i class="fas fa-arrow-up"></i> {/* Up Arrow Icon (Font Awesome) */}
+        </button>
+    </div>
+
+    <script>
+        // Get the button
+        let scrollToTopButton = document.getElementById("scroll-to-top");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopButton.classList.add("show");
+            } else {
+                scrollToTopButton.classList.remove("show");
+            }
+        };
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopButton.onclick = function() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        };
+    </script>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js" crossorigin="anonymous"></script> {/* Font Awesome Kit (Replace with your actual kit) */}
+</body>
+</html>

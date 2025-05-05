@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dataset Analysis Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quantico:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preload" href="{% static 'logo.jpeg' %}" as="image">
+    <link rel="preload" href="{% static 'business.jpg' %}" as="image">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      /* Minified CSS (Critical CSS) - Extracted from the original <style> block */
+      .logo{display:inline-flex;align-items:center;gap:12px;transition:transform .3s ease} /* Increased gap */
+      .logo:hover{transform:scale(1.07);} /* Slightly more pronounced scale */
+      .logo-image{width:60px;height:60px;animation:rotateLogo 4s linear infinite} /* Increased size */
+      @keyframes rotateLogo{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+      .logo-text{font-size:36px;font-weight:700;color:#6366f1;font-family:'Quantico',sans-serif} /* Increased font size */
+      .upload-box{border:2px dashed #d1d5db;border-radius:.75rem;padding:3rem;text-align:center;cursor:pointer;transition:all .3s ease;background-color:#f7fafc}
+      .upload-box:hover{border-color:#6366f1;background-color:#edf2f7;transform:translateY(-10px) scale(1.02);box-shadow:0 6px 10px rgba(0,0,0,.1)}
+      .upload-box p{color:#6b7280;font-size:1.2rem;margin-top:1rem;font-family:'Quantico',sans-serif;transition:color .3s ease}
+      .upload-box:hover p{color:#4f46e5}
+      .upload-box i{font-size:4rem;color:#6366f1;margin-bottom:1.5rem;animation:pulse 2s infinite}
+      @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.1)}100%{transform:scale(1)}}
+      .analyze-button{margin-top:2.5rem;transition:all .3s ease;animation:fadeIn 1s ease,pulseButton 2s infinite alternate}
+      .analyze-button:hover{transform:translateY(-8px) scale(1.08);box-shadow:0 10px 18px rgba(0,0,0,.18)} /* Increased shadow and scale */
+      @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+      @keyframes pulseButton{from{transform:scale(1)}to{transform:scale(1.05)}}
+      .footer{background-color:#e5e7eb;padding:3rem 0;text-align:center;border-top:1px solid #d1d5db;margin-top:5rem}
+      .footer p{color:#4b5563;font-size:1rem;margin-bottom:.75rem;font-family:'Quantico',sans-serif}
+      .linkedin-logo{width:36px;height:36px;margin-left:.75rem;display:inline-block;transition:transform .2s ease-in-out} /* Increased size */
+      .linkedin-logo:hover{transform:translateY(-3px) scale(1.15)} /* Increased scale */
+      .header-button{margin-left:1.25rem;font-size:1.2rem;font-family:'Quantico',sans-serif;transition:all .3s ease;padding:0.8rem 2.2rem} /* Increased font size and padding */
+      .header-button:hover{transform:translateY(-5px) scale(1.09);box-shadow:0 4px 8px rgba(0,0,0,.12)} /* Increased shadow and scale */
+      .hero-section{display:flex;align-items:center;justify-content:space-between;margin-bottom:3rem;gap:3rem;animation:slideIn 1s ease}
+      @keyframes slideIn{from{opacity:0;transform:translateX(-50px)}to{opacity:1;transform:translateX(0)}}
+      .hero-image{width:55%;max-height:500px;object-fit:cover;border-radius:.75rem;transition:transform .3s ease;box-shadow:0 8px 15px rgba(0,0,0,.1)}
+      .hero-image:hover{transform:scale(1.04);box-shadow:0 12px 20px rgba(0,0,0,.15)}
+      .hero-text{width:45%;animation:fadeIn 1s ease,slideInRight 1s ease}
+      @keyframes slideInRight{from{opacity:0;transform:translateX(50px)}to{opacity:1;transform:translateX(0px)}}
+      .hero-title{font-size:3.5rem;font-weight:700;color:#4f46e5;margin-bottom:1.25rem;font-family:'Quantico',sans-serif;text-shadow:2px 2px 4px rgba(0,0,0,.2)}
+      .hero-description{font-size:1.3rem;color:#6b7280;line-height:2rem;font-family:'Quantico',sans-serif;animation-delay:.2s}
+      .quote-section{background-color:#f7fafc;padding:5rem 0;text-align:center;margin-bottom:3rem;animation:fadeIn 1s ease}
+      .quote-text{font-size:2.5rem;font-style:italic;color:#4f46e5;line-height:3.25rem;font-weight:500;margin-bottom:1.5rem;font-family:'Quantico',sans-serif;animation:pulseText 3s infinite alternate;text-shadow:1px 1px 2px rgba(0,0,0,.1)}
+      @keyframes pulseText{from{transform:scale(1);color:#4f46e5}to{transform:scale(1.03);color:#6366f1}}}
+      .quote-author{font-size:1.5rem;color:#718096;font-weight:600;font-family:'Quantico',sans-serif;opacity:0;animation:fadeIn 1s ease forwards .5s}
+      body{background:linear-gradient(to bottom,#f0f2ff,#e0e7ff);background-size:cover;background-attachment:fixed}
+      .header{background-color:rgba(255,255,255,.8);box-shadow:0 4px 6px rgba(0,0,0,.1)}
+      .footer{background-color:rgba(255,255,255,.8);border-top:1px solid #d1d5db;box-shadow:0 -2px 4px rgba(0,0,0,.05)}
+      .upload-box{background-color:rgba(255,255,255,.8);transition:background-color .3s ease,transform .3s ease,box-shadow .3s ease}
+      .upload-box:hover{background-color:rgba(255,255,255,.95);transform:translateY(-10px) scale(1.02);box-shadow:0 6px 10px rgba(0,0,0,.1);border-color:#8b5cf6}
+      .quote-section{background-color:rgba(255,255,255,.8)}
+      .supported-formats{margin-top:3rem;text-align:center;padding:1.5rem;border-radius:.75rem;background-color:rgba(255,255,255,.8);box-shadow:0 4px 6px rgba(0,0,0,.1);animation:scaleIn .5s ease}
+      @keyframes scaleIn{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+      .supported-formats h3{font-size:1.5rem;font-weight:600;margin-bottom:1.25rem;font-family:'Quantico',sans-serif;color:#4f46e5}
+      .supported-formats-icons{display:flex;justify-content:center;gap:1.5rem;margin-top:1.5rem}
+      .supported-formats-icons img{width:60px;height:60px;transition:transform .2s ease}
+      .supported-formats-icons img:hover{transform:scale(1.2);filter:brightness(1.1)}
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans antialiased">
+    <header class="bg-white shadow-md py-6 header">
+      <div class="container mx-auto flex justify-between items-center">
+        <div class="logo">
+          <img src="{% static 'logo.jpeg' %}" alt="Logo" class="logo-image" />
+          <span class="logo-text">Dataset Analysis Hub</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container mx-auto py-12">
+      <div class="hero-section">
+        <img src="{% static 'business.jpg' %}" alt="Data Analysis" class="hero-image" />
+        <div class="hero-text">
+          <h2 class="hero-title">Unlock the Power of Your Data</h2>
+          <p class="hero-description">
+            Welcome to Dataset Analysis Hub, your platform for exploring,
+            understanding, and transforming your data.  We provide powerful tools
+            and a user-friendly interface to help you gain valuable insights,
+            identify trends, and make informed decisions.  Upload your dataset
+            today and begin your journey to data-driven success.
+          </p>
+        </div>
+      </div>
+      <div class="quote-section">
+        <blockquote class="quote-text">
+          "The goal is to turn data into information, and information into insight."
+        </blockquote>
+        <p class="quote-author">- Carly Fiorina</p>
+      </div>
+      <form action="/analyze" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="upload-box">
+          <i class="fas fa-upload"></i>
+          <p>Click to upload or drag and drop your dataset here</p>
+          <input type="file" name="file" id="fileInput" style="display: none;"> <label for="fileInput" style="cursor: pointer;">Choose File</label>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3.5 px-8 rounded-lg transition duration-300 ease-in-out analyze-button">
+            Analyze
+          </button>
+        </div>
+      </form>
+
+      <div class="supported-formats">
+            <h3>Supported Data Formats</h3>
+            <div class="supported-formats-icons">
+                <img src="{% static 'csv.png' %}" alt="CSV">
+                <img src="{% static 'excel.png' %}" alt="Excel">
+                <img src="{% static 'sql.png' %}" alt="SQL">
+                <img src="{% static 'json.png' %}" alt="JSON">
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+      <p>
+        Developed by Your Name <br>
+        This is a personal project, not for publishing or commercial use.
+        <a href="https://www.linkedin.com/in/your-linkedin-profile" target="_blank" rel="noopener noreferrer">
+          <img src="{% static 'linkedin.png' %}" alt="LinkedIn Logo" class="linkedin-logo" />
+        </a>
+      </p>
+    </footer>
+    <script>
+        // Deferred JavaScript (place at the end of the body)
+        document.addEventListener('DOMContentLoaded', () => {
+            //  Any JavaScript that needs to run after the initial page load can go here.
+             const fileInput = document.getElementById('fileInput');
+            const uploadBox = document.querySelector('.upload-box');
+            const analyzeButton = document.querySelector('.analyze-button');
+
+            uploadBox.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', () => {
+                if (fileInput.files.length > 0) {
+                    uploadBox.classList.add('file-selected');
+                    uploadBox.querySelector('p').textContent = `File selected: ${fileInput.files[0].name}`;
+                    analyzeButton.classList.remove('hidden');
+                } else {
+                    uploadBox.classList.remove('file-selected');
+                    uploadBox.querySelector('p').textContent = 'Click to upload or drag and drop your dataset here';
+                    analyzeButton.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+  </body>
+</html>
